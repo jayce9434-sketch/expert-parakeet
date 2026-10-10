@@ -1,0 +1,46 @@
+BUGBREAK: Colony Siege — Update 6.0 Art & Audio Rebuild
+Automated QA report
+
+RESULT: PASS for the tested core flows below.
+
+Static validation
+- data.js: Node syntax check PASS
+- audio.js: Node syntax check PASS
+- ui.js: Node syntax check PASS
+- game.js: Node syntax check PASS
+- Playable insect definitions: 9
+- New playable insects: Bee, Stinkbug, Spider
+- Regular enemy definitions: 18
+- Boss definitions: 10
+- Unique boss MP3 files: 10
+- Multiplayer runtime files shipped: 0
+- PeerJS script references: 0
+- network.js shipped: NO
+
+Browser smoke test
+- Browser-rendered main menu loaded without JavaScript errors.
+- 9 insect cards rendered.
+- Spider selection worked.
+- START EXPEDITION entered a running Wave 1 game.
+- Wave 1 spawned six enemies and rendered the HUD/world/player/nest.
+- Debug QA jump to boss #1 correctly produced Wave 5 Garden Mantis.
+- Pause -> Upgrades opened correctly.
+- 390 x 844 touch viewport loaded and started a Bee run.
+- Mobile horizontal overflow: 0 px.
+- Browser page errors recorded during tested flows: 0.
+
+Art / UI
+- New 512x512 app icon present.
+- New 192x192 app icon present.
+- Apple touch icon present.
+- Rebuilt vector-style insect rendering for the playable roster and enemy families.
+- Boss-specific large-body rendering present.
+- 5 biome definitions present.
+- Five real screenshots from the running build present.
+
+Audio
+- Supplied normal-1.mp3 through normal-4.mp3 retained for normal play.
+- boss-1.mp3 through boss-10.mp3 are ten separately generated original tracks.
+- Nine new SFX files present.
+
+This is a smoke test, not a guarantee that no device-specific browser edge case can ever occur.

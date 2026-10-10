@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#0a1711" />
+  <title>BUGBREAK: Colony Siege</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="game" width="1280" height="720" aria-label="BUGBREAK game canvas"></canvas>
+    <div id="vignette"></div><div id="grain"></div><div id="toast" aria-live="polite"></div>
+
+    <section id="menu" class="screen active">
+      <div class="menu-shell">
+        <div class="menu-card glass hero-card">
+          <div class="brand-row">
+            <img class="brand-icon" src="icon-192.png" alt="BUGBREAK app icon" />
+            <div><div class="eyebrow">UPDATE 6.0 · ART & AUDIO REBUILD</div><h1><span>BUG</span>BREAK</h1><h2>COLONY SIEGE</h2></div>
+          </div>
+          <p class="hero-copy"><b>SOLO REBUILD:</b> multiplayer is completely gone. Nine playable insects, eighteen regular enemies, ten boss fights, five biomes, unique boss themes, mutations, relics, contracts, and a rebuilt visual pass.</p>
+          <div class="section-kicker">CHOOSE YOUR INSECT</div>
+          <div class="bug-select" id="bugSelect"></div>
+          <div id="bugDetail" class="bug-detail"></div>
+          <div class="menu-actions"><button id="playBtn" class="primary big">START EXPEDITION</button><button id="shopBtn">UPGRADES</button><button id="settingsBtn">SETTINGS</button></div>
+          <div id="dailyCard" class="daily-card"></div>
+          <div class="meta-row"><span>Best <b id="bestWave">0</b>/50</span><span>Gems <b id="menuGems">0</b></span><span>Roster <b id="rosterCount">6/9</b></span><button id="resetBtn" class="text-btn">Reset save</button></div>
+        </div>
+        <aside class="feature-rail glass">
+          <div><small>ENEMIES</small><b>18</b><span>regular predators</span></div>
+          <div><small>BOSSES</small><b>10</b><span>each with its own theme</span></div>
+          <div><small>PLAYABLE</small><b>9</b><span>Bee · Stinkbug · Spider added</span></div>
+          <div><small>ONLINE</small><b>0</b><span>multiplayer deleted</span></div>
+        </aside>
+      </div>
+      <div class="tip glass">WASD / arrows move · SPACE bite · SHIFT dash · E special · R repair · mobile controls included</div>
+    </section>
+
+    <section id="shop" class="screen"><div class="panel glass wide">
+      <div class="panel-head"><div><div class="eyebrow">Permanent colony evolution</div><h3>UPGRADES</h3></div><button data-close="shop" class="icon-btn">✕</button></div>
+      <div id="upgradeGrid" class="upgrade-grid"></div><div class="shop-footer">Spendable gems: <b id="shopGems">0</b> · upgrades apply immediately and persist</div>
+    </div></section>
+
+    <section id="levelup" class="screen"><div class="panel glass choice-panel"><div class="eyebrow">DNA mutation available</div><h3>CHOOSE A MUTATION</h3><p class="subcopy">Your run keeps moving after you choose one.</p><div id="cards" class="cards"></div></div></section>
+    <section id="relic" class="screen"><div class="panel glass choice-panel"><div class="eyebrow">Boss relic recovered</div><h3>CHOOSE A RELIC</h3><p class="subcopy">Relics last for this expedition and can completely change your build.</p><div id="relicCards" class="cards"></div></div></section>
+    <section id="pause" class="screen"><div class="panel glass small"><div class="eyebrow">Expedition paused</div><h3>PAUSED</h3><button id="resumeBtn" class="primary">RESUME</button><button id="pauseShopBtn">UPGRADES</button><button id="pauseSettingsBtn">SETTINGS</button><button id="quitBtn">QUIT RUN</button></div></section>
+
+    <section id="settings" class="screen"><div class="panel glass settings-panel">
+      <div class="panel-head"><div><div class="eyebrow">Audio & gameplay</div><h3>SETTINGS</h3></div><button id="settingsClose" class="icon-btn">✕</button></div>
+      <div class="setting-list">
+        <label><span><b>MASTER VOLUME</b><small>0%–2000% · over 100% is boosted</small></span><div><input id="masterVol" type="range" min="0" max="2000" step="10"><output id="masterOut">100%</output></div></label>
+        <label><span><b>MUSIC</b><small>Four biome tracks + ten unique boss themes</small></span><div><input id="musicVol" type="range" min="0" max="2000" step="10"><output id="musicOut">100%</output></div></label>
+        <label><span><b>SFX</b><small>Bites, impacts, wings, gems, repairs, alerts</small></span><div><input id="sfxVol" type="range" min="0" max="2000" step="10"><output id="sfxOut">100%</output></div></label>
+        <label class="toggle-row"><span><b>NORMAL MUSIC</b><small>Ambient soundtrack between bosses</small></span><input id="normalMusicToggle" type="checkbox" checked></label>
+        <label class="toggle-row"><span><b>SCREEN SHAKE</b><small>Combat impact camera shake</small></span><input id="shakeToggle" type="checkbox" checked></label>
+        <label class="toggle-row"><span><b>PERFORMANCE MODE</b><small>Reduces particles and shadow layers on phones/tablets</small></span><input id="perfToggle" type="checkbox"></label>
+      </div>
+      <div class="settings-note">2000% can distort. Start low before testing boosted audio.</div>
+    </div></section>
+
+    <section id="gameover" class="screen"><div class="panel glass small"><div class="eyebrow">The predators broke through.</div><h3>RUN OVER</h3><div id="runStats" class="run-stats"></div><button id="againBtn" class="primary">RUN IT BACK</button><button id="menuBtn">MAIN MENU</button></div></section>
+    <section id="victory" class="screen"><div class="panel glass small victory"><div class="crown">♛</div><div class="eyebrow">THE COLONY SURVIVED</div><h3>WAVE 50 CLEARED</h3><p>You beat the full backyard campaign and took down the Mantis Overlord.</p><div id="victoryStats" class="run-stats"></div><button id="victoryAgainBtn" class="primary">NEW RUN</button><button id="victoryMenuBtn">MAIN MENU</button></div></section>
+
+    <div id="hud" class="hidden">
+      <div class="hud-top">
+        <div class="barbox glass"><span>YOU</span><div class="bar"><i id="hpBar"></i></div><b id="hpText"></b></div>
+        <div class="wave glass"><small>WAVE</small><b><span id="waveText">1</span><em>/50</em></b><span id="enemyCount">0 left</span></div>
+        <div class="barbox glass"><span>NEST</span><div class="bar nest"><i id="nestBar"></i></div><b id="nestText"></b></div>
+      </div>
+      <div class="hud-bottom">
+        <div class="currency glass"><span>Crumbs <b id="crumbsText">0</b></span><span>Gems <b id="gemsText">0</b></span><span>LV <b id="levelText">1</b> · XP <b id="xpText">0/55</b></span></div>
+        <div class="xp glass"><i id="xpBar"></i></div>
+        <div class="hud-tools"><button id="roundShopBtn" class="hud-shop glass">UPGRADES</button><button id="pauseBtn" class="icon-btn glass">Ⅱ</button></div>
+      </div>
+      <div id="bossBanner" class="boss-banner"><span>⚠</span><div><small id="bossTag">APEX PREDATOR</small><b id="bossName">GARDEN MANTIS</b></div><span>⚠</span></div>
+      <div id="waveReward" class="wave-reward"></div><div id="eventPill" class="event-pill glass">CALM YARD</div><div id="contractHud" class="contract-hud glass"></div><div id="comboHud" class="combo-hud"><b id="comboText">x0</b><span>COMBO</span></div>
+      <div id="abilityHud" class="ability-hud glass"><b id="abilityName">SPECIAL</b><span id="abilityState">READY</span></div>
+    </div>
+
+    <div id="mobileControls" class="hidden" aria-hidden="true">
+      <div id="stickBase"><div id="stickKnob"></div></div>
+      <div class="action-cluster"><button id="repairBtn" class="action repair">REPAIR<br><small>12</small></button><button id="specialBtn" class="action special">SPECIAL</button><button id="dashBtn" class="action dash">DASH</button><button id="biteBtn" class="action bite">BITE</button></div>
+    </div>
+  </div>
+  <script src="data.js"></script><script src="audio.js"></script><script src="ui.js"></script><script src="game.js"></script>
+  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}</script>
+</body>
+</html>
